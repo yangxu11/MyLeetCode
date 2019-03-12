@@ -23,10 +23,12 @@ Explanation: The answer is "wke", with the length of 3.
 Solution:
 
 //最优解 
+//i为当前遍历过的字符串中未出现重复的最小下标，如果index[s.charAt(j)]>i说明i之后开始出现重复的s.charAt(j)，所以i后移
+//此时比较最长
+//记录s.charAt(j)最大的下标
 public int lengthOfLongestSubstring(String s) {
         int n = s.length(), ans = 0;
-        int[] index = new int[128]; // current index of character
-        // try to extend the range [i, j]
+        int[] index = new int[128]; 
         for (int j = 0, i = 0; j < n; j++) {
             i = Math.max(index[s.charAt(j)], i);
             ans = Math.max(ans, j - i + 1);
