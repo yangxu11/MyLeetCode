@@ -11,8 +11,8 @@ public class Q72 {
     //若 word1[i] == word2[j] 表示不需要操作，则dp[i][j]=dp[i-1][j-1]
     //若 word1[i] != word2[j] 则可以有三种情况
     //   1、替换 word1[i] 把 word1[i] 替换成 word2[j] 需要 dp[i-1][j-1]+1步
-    //   2、删除 word1[i] 把 word1[i] 删除成 word1[i-1] 需要 dp[i-1][j]+1步
-    //   3、增加 word2[j] 把 word1[i-1] 拓展成 word1[i] 增加一个word2[j] ，需要 dp[i][j-1]+1步
+    //   2、删除 word1[i] 把 word1[i] 删除成 word1[i-1] 需要 dp[i][j-1]+1步
+    //   3、删除 word2[j] 把 word2[j] 删除成 word2[j-1] 需要 dp[i-1][j]+1步(增加word1和删除word2一个效果)
     // 取这三个中最小值
     public int minDistance(String word1, String word2) {
         int len1 = word1.length();
