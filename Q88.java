@@ -1,7 +1,7 @@
 package leetcode;
 //合并两个有序数组
 public class Q88 {
-    //5ms  从后合并
+    /**5ms  从后合并**/
     public void merge2(int[] nums1, int m, int[] nums2, int n) {
         int count = m+n-1;
         while(m-1>=0 || n-1>=0){
@@ -18,7 +18,14 @@ public class Q88 {
         }
     }
 
-    //5ms 67%  从头合并
+    /**5ms  从头合并**/
+    /**
+     * @Author YX
+     * @Description 
+     * @Date 10:23 2019/3/26
+     * @Param [nums1, m, nums2, n]
+     * @return void
+     **/
     public void merge(int[] nums1, int m, int[] nums2, int n) {
         int i=0,j=0;
 
