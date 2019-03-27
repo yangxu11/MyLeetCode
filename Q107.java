@@ -1,12 +1,19 @@
 package leetcode;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
-//二叉树层次遍历
-public class Q102 {
-
-    public List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> res = new ArrayList<>();
+/**
+ * 二叉树的层序遍历II
+ *
+ * @author yx
+ * @create 2019-03-27  20:36
+ **/
+public class Q107 {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        LinkedList<List<Integer>> res = new LinkedList<>();
         if(root==null) return res;
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
@@ -20,9 +27,8 @@ public class Q102 {
                 if(node.left!=null) queue.offer(node.left);
                 if(node.right!=null) queue.offer(node.right);
             }
-            res.add(list);
+            res.addFirst(list);
         }
         return res;
     }
-
 }
