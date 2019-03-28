@@ -13,15 +13,12 @@ public class Q113 {
 
     public void getPath(List<List<Integer>> list,TreeNode root,int sum,List<Integer> path) {
         if(root==null) return;
-        sum -= root.val;
 
+        sum -= root.val;
         path.add(root.val);
 
         if(root.left==null && root.right==null && sum==0) {
             list.add(new ArrayList<>(path));
-            //去掉这两行，结果相同
-//            path.remove(path.size()-1);
-//            return;
         }
         getPath(list,root.left,sum,path);
         getPath(list,root.right,sum,path);
