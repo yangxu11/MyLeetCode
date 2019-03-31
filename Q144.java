@@ -6,41 +6,36 @@ import java.util.Stack;
 
 public class Q144 {
 
-     static class TreeNode {
-         int val;
-      TreeNode left;
-      TreeNode right;
-      TreeNode(int x) { val = x; }
-  }
-
-
-    public static List<Integer> preorderTraversal(TreeNode root) {
-
-        List<Integer> list = new ArrayList<>();
-        Stack<TreeNode> stack = new Stack<>();
-        TreeNode node = root;
-
-        while(node!=null) {
-            stack.push(node);
-            list.add(node.val);
-            node = node.left;
-            while(node == null) {
-                if(stack.isEmpty()) {
-                    break;
-                }
-                node = stack.pop().right;
-            }
-        }
-
-        return list;
-
+//递归
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        preorder(root,res);
+        return res;
+    }
+    public void preorder(TreeNode root,List<Integer> list){
+        if(root==null) return;
+        list.add(root.val);
+        preorder(root.left,list);
+        preorder(root.right,list);
     }
 
-    public static void main(String[] args) {
-        TreeNode root = new TreeNode(0);
-        root.left = new TreeNode(1);
-        root.right = new TreeNode(2);
+   //非递归
+   public List<Integer> preorderTraversal1(TreeNode root) {
+       List<Integer> res = new ArrayList<>();
+       Stack<TreeNode> stack = new Stack<>();
+       //stack.push(root);
+       while(!stack.isEmpty() || root!=null){
+           while(root!=null){
+               stack.push(root);
+               res.add(root.val);
+               root = root.left;
+           }
+           if(!stack.isEmpty()){
+               root = stack.pop();
+               root = root.right;
+           }
+       }
+       return res;
+   }
 
-        System.out.println(preorderTraversal(root));
-    }
 }
