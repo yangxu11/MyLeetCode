@@ -106,8 +106,8 @@ public class BinTree {
 
     // 后序遍历非递归
     public static void PostOrder2(BinTree t) {
-        Stack<BinTree> s = new Stack<BinTree>();
-        Stack<Integer> s2 = new Stack<Integer>();
+        Stack<BinTree> s = new Stack<>();
+        Stack<Integer> s2 = new Stack<>();
         Integer i = new Integer(1);
         while (t != null || !s.empty()) {
             while (t != null) {
