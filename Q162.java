@@ -25,4 +25,23 @@ public class Q162 {
         }
         return nums[start] > nums[end] ? start : end;//防止逼近时start,end错位 如{2，1}
     }
+
+    public int findPeakElement2(int[] nums) {
+        int start = 0;
+        int end = nums.length-1;
+        while(start<end){
+            int mid = start+(end-start)/2;
+            if(mid==start) {
+                return nums[start]>nums[end] ? start : end;
+            }
+            if(nums[mid]>nums[start] && nums[end]>nums[mid]){
+                start = mid+1;
+            } else if(nums[mid]<nums[start] && nums[end]<nums[mid]){
+                end = mid-1;
+            } else{
+                start++;
+            }
+        }
+        return start;
+    }
 }
