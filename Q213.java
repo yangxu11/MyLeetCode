@@ -11,31 +11,22 @@ public class Q213 {
     public int rob(int[] nums) {
         if(nums.length==0) return 0;
         if(nums.length == 1) return nums[0];
-        if(nums.length == 2) return Math.max(nums[0],nums[1]);
-        //取第一个房子，最后一个取不到
-        int m1 = 0;
-        int m2 = nums[0];
-        int m3 = nums[1];
-        int result = Math.max(nums[0],nums[1]);
-        for(int i=3 ; i<nums.length ; i++){
-            int m = Math.max(m1,m2) + nums[i-1];
-            result = Math.max(result,m);
-            m1 = m2;
-            m2 = m3;
-            m3 = m;
-        }
-        //取第二个房屋，第一个取不到
-        m1 = 0;
-        m2 = nums[1];
-        m3 = nums[2];
-        for(int i=4 ; i<nums.length+1 ; i++){
-            int m = Math.max(m1,m2) + nums[i-1];
-            result = Math.max(result,m);
-            m1 = m2;
-            m2 = m3;
-            m3 = m;
-        }
 
-        return result;
+        return Math.max(rob(nums,0,nums.length-2),rob(nums,1,nums.length-1));
+    }
+    private int rob(int[] nums,int start,int end){
+        int len = end-start+1;
+        if(len==1) return nums[start];
+        if(len==2) return Math.max(nums[start],nums[end]);
+        int m1 = 0;
+        int m2 = nums[start];
+        int m3 = nums[start+1];
+        for(int i=start+2 ; i<=end ; i++){
+            int m = Math.max(m1,m2) + nums[i];
+            m1 = m2;
+            m2 = m3;
+            m3 = m;
+        }
+        return Math.max(m2,m3);
     }
 }
