@@ -9,21 +9,25 @@ public class Q221 {
     //比较输出最大
     public int maximalSquare(char[][] matrix) {
         int result = 0;
+        int xlen = matrix.length;
+        if(xlen==0) return 0;
+        int ylen = matrix[0].length;
+        if(ylen==0) return 0;
+        int[][] dp = new int[xlen][ylen];
+        for(int i=0 ; i<xlen ; i++){
+            dp[i][0] = matrix[i][0]-'0';
+            if(dp[i][0]==1) result = 1;
+        }
 
-        for(int i=0 ; i<matrix.length ; i++){
-            for(int j=0 ; j<matrix[0].length ; j++){
-                if(i==0 || j==0){
-                    result = Math.max(result,matrix[i][j]-'0');
-                    continue;
-                }
+        for(int i=0 ; i<ylen ; i++){
+            dp[0][i] = matrix[0][i]-'0';
+            if(dp[0][i]==1) result = 1;
+        }
+        for(int i=1 ; i<matrix.length ; i++){
+            for(int j=1 ; j<matrix[0].length ; j++){
                 if(matrix[i][j] == '1'){
-                    int x = matrix[i-1][j] - '0';
-                    int y = matrix[i-1][j-1] - '0';
-                    int z = matrix[i][j-1] - '0';
-                    int value = Math.min(x,Math.min(y,z)) + 1;
-                    result = Math.max(result,value);
-                    matrix[i][j] = (char)((Math.min(Math.min(x,y),Math.min(y,z)) + 1)+'0');
-
+                    dp[i][j] = Math.min(Math.min(dp[i-1][j],dp[i][j-1]),Math.min(dp[i-1][j],dp[i-1][j-1]))+1;
+                    result = Math.max(result,dp[i][j]);
                 }
 
             }
