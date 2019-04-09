@@ -1,4 +1,7 @@
 package leetcode;
+
+import java.util.Stack;
+
 //二叉搜索树中的第K小的节点值
 public class Q230 {
 
@@ -17,5 +20,23 @@ public class Q230 {
             return root.val;
         }
         return kthSmallest(root.right, k);
+    }
+
+    //非递归
+    public int kthSmallest2(TreeNode root, int k) {
+        if(root==null) return 0;
+
+        Stack<TreeNode> stack = new Stack<>();
+
+        while(root!=null || !stack.isEmpty()){
+            while(root!=null){
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            if(--k==0) return root.val;
+            root = root.right;
+        }
+        return 0;
     }
 }
