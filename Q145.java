@@ -33,7 +33,7 @@ public class Q145 {
         return res;
     }
 
-    //每个节点入栈两遍，第一遍入栈子节点，第二遍存储自身的值
+    //每个节点入栈两遍，第一遍入栈子节点，第二遍存储自身的值，右端节点先入栈
     public List<Integer> postorderTraversal2(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         if(root==null) return res;
