@@ -15,7 +15,7 @@ public class Q257 {
         if(s.length()==0) {
             s = String.valueOf(root.val);
         } else {
-            s += "->" + String.valueOf(root.val);
+            s += "->" + root.val;
         }
         if(root.right==null && root.left==null) {
             list.add(s);
