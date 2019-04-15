@@ -7,26 +7,15 @@ public class Q279 {
     //动态规划，建立数组存储n之前所有数字的最小的平方数个数
     //计算n时，比较n去掉一个<n的平方数剩余数字的平方数个数，取其最小值，比如1，n-1  1+result[n-1] ; 4, n-4  1+result[n-4]
     public int numSquares(int n) {
-        int[] result = new int[n+1];
-        result[0] = 0;
-        result[1] = 1;
-
-        int x=2;
-        int i=1;
-
-        while(x<=n){
-            while(i*i<=x){
-                i++;
+        int[] dp = new int[n+1];
+        dp[0] = 0;
+        dp[1] = 1;
+        for(int i=2 ; i<=n ; i++){
+            dp[i] = Integer.MAX_VALUE;
+            for(int j=1 ; j*j<=i ; j++){
+                dp[i] = Math.min(dp[i],1+dp[i-j*j]);
             }
-            i--;
-            int min = 1+result[x-i*i];
-            for(int j=i-1 ; j>=1 ; j--){
-                min = Math.min(min,1+result[x-j*j]);
-            }
-            result[x] = min;
-            x++;
         }
-
-        return result[n];
+        return dp[n];
     }
 }
