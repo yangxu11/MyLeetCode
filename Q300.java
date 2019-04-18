@@ -12,36 +12,30 @@ public class Q300 {
      数组尾部, 并将最长递增序列长度maxL加1
      2. dp[i-1] < num <= dp[i], 只更新相应的dp[i]
      **/
-    public int lengthOfLIS1(int[] nums) {
-        if (nums.length == 0) {
-            return 0;
-        }
-        int[] b = new int[nums.length + 1];//b[1]到b[nums.length]存储
-        b[1] = nums[0];
-        int len = 1;
-        for (int i = 1; i < nums.length; i++) {
-            if (nums[i] > b[len]) {
-                b[++len] = nums[i];
-
-
-            } else {
-                int start = 1, end = len;
-                int mid = 0;
-                while (start <= end) {
-                    mid = start + (end - start) / 2;
-                    if (b[mid] < nums[i]) {
-                        start = mid + 1;
-                    } else {
-                        end = mid - 1;
+    public int lengthOfLIS(int[] nums) {
+        if(nums.length == 0) return 0;
+        int[] dp = new int[nums.length];
+        int res = 0;
+        dp[0] = nums[0];
+        for(int i=0 ; i<nums.length ; i++){
+            if(nums[i]>dp[res]){
+                dp[++res] = nums[i];
+            } else{
+                int start = 0;
+                int end = res;
+                while(start<=end){
+                    int mid = start+(end-start)/2;
+                    if(nums[i]>dp[mid]){
+                        start = mid+1;
+                    } else{
+                        end = mid-1;
                     }
                 }
-
-                b[start] = nums[i];
-                len = Math.max(start, len);
-
+                dp[start] = nums[i];
             }
         }
-        return len;
+
+        return res+1;
     }
     //执行用时: 43 ms, 在Longest Increasing Subsequence的Java提交中击败了19.72% 的用户
     //内存消耗: 21.3 MB, 在Longest Increasing Subsequence的Java提交中击败了26.18% 的用户
@@ -49,7 +43,7 @@ public class Q300 {
     //动态规划
     //遍历到i时，向前寻找小于nums[n]的数组值，取其res[j]（下标j对应的最长上升序列），找到最大的max=res[j]
     //res[i]= 1+max;然后比较输出最大值
-    public int lengthOfLIS(int[] nums) {
+    public int lengthOfLIS1(int[] nums) {
         if(nums.length==0) return 0;
         int[] res = new int[nums.length];
         int result = 1;

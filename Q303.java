@@ -5,17 +5,23 @@ public class Q303 {
     //内存消耗: 32.8 MB, 在Range Sum Query - Immutable的Java提交中击败了99.05% 的用户
 
     class NumArray {
-        int[] nums;
+        int[] sums;
+
         public NumArray(int[] nums) {
-            this.nums = nums;
+            sums = new int[nums.length];
+            int sum = 0;
+            for(int i=0 ; i<nums.length ; i++){
+                sum += nums[i];
+                sums[i] = sum;
+            }
         }
 
         public int sumRange(int i, int j) {
-            int sum = 0;
-            for(int x= i ; x<=j ; x++){
-                sum += nums[x];
+            if(i==0){
+                return sums[j];
+            } else{
+                return sums[j] - sums[i-1];
             }
-            return sum;
         }
     }
 }
