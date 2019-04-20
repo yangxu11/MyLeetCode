@@ -8,81 +8,73 @@ package leetcode;
  **/
 public class Q307 {
 
-    //线段树
+    //线段树，构造树结构存储数组，左节点为左半数组，右节点为右半数组，更新时二分查找，取和时也是二分查找
     class NumArray {
-
-        class Node {
-            int l;
-            int r;
-            int val;
-            int f;
-
-            public Node(int l, int r) {
-                this.l = l;
-                this.r = r;
+        class Node{
+            int start,end;
+            int sum;
+            Node left;
+            Node right;
+            public Node(int start,int end,int sum){
+                this.start = start;
+                this.end = end;
+                this.sum = sum;
             }
         }
 
         private int[] nums;
-        private Node[] tree;
+        private Node root;
 
         public NumArray(int[] nums) {
-
             if(nums.length==0) return;
             this.nums = nums;
-            // 叶子节点是N,总结点数最多4*N
-            tree = new Node[nums.length * 4];
-            build(0, 0, nums.length - 1);
-
+            root = buildTree(0,nums.length-1);
         }
 
-        private void build(int n, int l, int r) {
-            tree[n] = new Node(l, r);
-            if (l == r) {
-                tree[n].val = nums[l];
-                return;
+        private Node buildTree(int start,int end){
+            if(start==end){
+                return new Node(start,end,nums[start]);
             }
-            int mid = (l + r) / 2;
-            build(2 * n + 1, l, mid);
-            build(2 * n + 2, mid + 1, r);
-            tree[n].val = tree[2 * n + 1].val + tree[2 * n + 2].val;
+            int mid = start + (end-start)/2;
+            Node node = new Node(start,end,0);
+            node.left = buildTree(start,mid);
+            node.right = buildTree(mid+1,end);
+            node.sum = node.left.sum + node.right.sum;
+            return node;
         }
 
         public void update(int i, int val) {
-            update(0, i, val);
+            update(root,i,val);
+        }
+        private void update(Node root,int i,int val){
+            if(root.start==root.end && root.start==i){
+                root.sum = val;
+                return;
+            }
+            int mid = root.start + (root.end - root.start) / 2;//二分查找
+            if (i <= mid) {
+                update(root.left,i,val);
+            } else {
+                update(root.right,i,val);
+            }
+            root.sum = root.left.sum + root.right.sum;
+            return;
         }
 
         public int sumRange(int i, int j) {
-            return sumRange(0, i, j);
+            return sumRange(root,i,j);
         }
+        private int sumRange(Node root,int i,int j){
+            if(root.start==i && root.end==j){
+                return root.sum;
+            }
 
+            int mid = root.start+(root.end - root.start)/2;//二分查找
+            if(j<=mid) return sumRange(root.left,i,j);
+            if(i>mid) return sumRange(root.right,i,j);
 
-        private void update(int n, int i, int val)//单点修改
-        {
-            if (tree[n].l == tree[n].r) {
-                tree[n].val = val;
-                return;
-            }
-            int m = (tree[n].l + tree[n].r) / 2;
-            if (i <= m) update(n * 2 + 1, i, val);
-            else update(n * 2 + 2, i, val);
-            tree[n].val = tree[n * 2 + 1].val + tree[n * 2 + 2].val;
-        }
+            return sumRange(root.left,i,mid)+sumRange(root.right,mid+1,j);
 
-        private int sumRange(int n, int i, int j)//区间查询
-        {
-            if (tree[n].l >= i && tree[n].r <= j) {
-                return tree[n].val;
-            }
-            int result = 0;
-            int mid = (tree[n].l + tree[n].r) / 2;
-            if (i <= mid) {
-                result += sumRange(2 * n + 1, i, j);
-            }
-            if (j > mid) {
-                result += sumRange(2 * n + 2, i, j);
-            }
-            return result;
         }
     }
 }
