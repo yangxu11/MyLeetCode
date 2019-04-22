@@ -1,6 +1,10 @@
 package leetcode;
 //丑数II
 public class Q264 {
+    public static void main(String[] args) {
+        Q264 q = new Q264();
+        System.out.println(q.nthUglyNumber(12));
+    }
     //执行用时: 10 ms, 在Ugly Number II的Java提交中击败了71.49% 的用户
     //内存消耗: 25.6 MB, 在Ugly Number II的Java提交中击败了27.85% 的用户
 

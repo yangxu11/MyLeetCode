@@ -1,46 +1,41 @@
 package leetcode;
 
-import java.util.Arrays;
+import java.util.PriorityQueue;
 
 public class Q313 {
 
-
+    public static void main(String[] args) {
+        int[] a = {2,7,13,19};
+        Q313 q = new Q313();
+        System.out.println( q.nthSuperUglyNumber(12,a));
+    }
     public int nthSuperUglyNumber(int n, int[] primes) {
-
-        if (n <= 0 || primes == null || primes.length == 0)
-            return -1;
-
-        int lengthOfPrime = primes.length;
-        //to indicate the location in the uglyNum of each prime
-        int[] primeLocation = new int[lengthOfPrime];
-        for (int i = 0; i < lengthOfPrime; i++)
-            // set all the location to indicate the first location
-            primeLocation[i] = 0;
-        int[] uglyNum = new int[n];
-        uglyNum[0] = 1;
-
-        for (int i = 1; i < n; i++) {
-
-            int min = uglyNum[primeLocation[0]] * primes[0];
-            for (int j = 1; j < lengthOfPrime; j++) {
-                if (uglyNum[primeLocation[j]] * primes[j] < min) {
-                    min = uglyNum[primeLocation[j]] * primes[j];
-                }
-
-            }
-            for (int j = 0; j < lengthOfPrime; j++) {
-                if (uglyNum[primeLocation[j]] * primes[j] == min) {
-                    primeLocation[j] += 1;
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        int[] cur = new int[primes.length];
+        for(int i=0 ; i<primes.length ; i++){
+            pq.add(primes[i]);
+            cur[i] = primes[i];
+        }
+        int[] ugly = new int[n];
+        ugly[0] = 1;
+        int[] indexs = new int[primes.length];
+        int count =1;
+        while(count<n){
+            int min = pq.peek();
+            ugly[count++] = min;
+            for(int i=0 ; i<cur.length ; i++){
+                if(cur[i]==min){
+                    int index = indexs[i];
+                    index++;
+                    pq.add(ugly[index]*primes[i]);
+                    cur[i] = ugly[index]*primes[i];
+                    indexs[i] += 1;
+                    pq.poll();
                 }
             }
-
-            uglyNum[i] = min;
 
         }
-
-        System.out.println(Arrays.toString(uglyNum));
-
-        return uglyNum[n - 1];
+        return ugly[n-1];
     }
 }
 
