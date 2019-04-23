@@ -4,6 +4,30 @@ import java.util.*;
 
 //零钱兑换
 public class Q322 {
+
+    //贪心，先从最大的面值入手，考虑不同数量的当前最大面值，类似回溯
+    private int result;
+    public int coinChange(int[] coins, int amount) {
+        result = Integer.MAX_VALUE;
+        Arrays.sort(coins);
+        min(coins,amount,coins.length-1,0);
+        return result==Integer.MAX_VALUE ? -1 : result;
+    }
+    private void min(int[] coins,int left,int pos,int res){
+        int coin = coins[pos];
+        if(pos==0){
+            if(left%coin==0){
+                result = Math.min(result,res+left/coin);
+            }
+        } else{
+            for(int i = left/coin ; i>=0 && res+i<result ; i--){
+                min(coins,left-i*coin,pos-1,res+i);
+            }
+        }
+    }
+
+
+
     //执行用时: 46 ms, 在Coin Change的Java提交中击败了44.04% 的用户
     //内存消耗: 33.6 MB, 在Coin Change的Java提交中击败了9.42% 的用户
 
@@ -23,30 +47,4 @@ public class Q322 {
         }
         return memo[amount] == amount + 1 ? -1 : memo[amount];
     }
-    //超时答案
-    //思路：同Q139  单词拆分
-    public int coinChange(int[] coins, int amount) {
-        if(amount==0) return 0;
-        List<Integer> list = new ArrayList<>();
-        for(int i : coins){
-            list.add(i);
-        }
-
-        Map<Integer,Integer> map = new HashMap<>();
-        map.put(0,0);
-
-        for(int i=1 ; i<=amount ; i++){
-            int min=Integer.MAX_VALUE;
-            for(Integer key : map.keySet()){
-                if(list.contains(i-key)){
-                    min = Math.min(min,map.get(key)+1);
-                }
-            }
-            if(min != Integer.MAX_VALUE){
-                map.put(i,min);
-            }
-        }
-        return map.containsKey(amount) ? map.get(amount) : -1;
-    }
-
 }
