@@ -23,4 +23,33 @@ public class Q376 {
         }
         return Math.max(up, down);
     }
+
+    //方法2 贪心
+    //前状态为上升时，如果目前状态还是上升则保留当前值（最大）
+    //前状态为下降时，如果目前状态还是下降则保留当前值（最小）
+    public int wiggleMaxLength2(int[] nums) {
+        if(nums.length<=1) return nums.length;
+        if(nums.length==2){
+            return nums[0]==nums[1] ? 1 : 2;
+        }
+        int res = 2;
+        int state=0;
+        int cur = nums[0];
+        int index = 1;
+        while(index<nums.length && nums[index] == cur){
+            index++;
+        }
+        if(index==nums.length) return 1;
+        state = nums[index]-nums[0] > 0 ? 1 : -1;
+        cur = nums[index];
+
+        for(int i=index+1 ; i<nums.length ; i++){
+            if((nums[i]-cur) * state < 0){
+                ++res;
+                state = -1*state;
+            }
+            cur = nums[i];
+        }
+        return res;
+    }
 }
