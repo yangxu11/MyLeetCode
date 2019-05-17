@@ -7,57 +7,49 @@ import java.util.List;
 
 //此题需要两个数组来分别记录太平洋和大西洋，都有标记的为解
 public class Q417 {
-    int xlen,ylen;
+    int row,col;
+    int[][] dirs = {{0,1},{0,-1},{1,0},{-1,0}};
     public List<int[]> pacificAtlantic(int[][] matrix) {
-        List<int[]> result = new ArrayList<>();
-        if(matrix.length==0) return result;
+        List<int[]> res = new ArrayList<>();
+        int xlen = matrix.length;
+        if(xlen == 0) return res;
+        int ylen = matrix[0].length;
+        if(ylen==0) return res;
+        row=xlen;
+        col=ylen;
+        boolean[][] m1 = new boolean[xlen][ylen];
+        boolean[][] m2 = new boolean[xlen][ylen];
 
-        xlen = matrix.length;
-        ylen = matrix[0].length;
-
-        int[][] m = new int[xlen][ylen];
-        int[][] n = new int[xlen][ylen];
-
-        for(int i=0 ; i<xlen ; i++) {
-            dfs(matrix,i,0,m);
-            dfs(matrix,i,ylen-1,n);
+        for(int i=0 ; i<ylen ; i++){
+            dfs(matrix,0,i,m1);
+            dfs(matrix,xlen-1,i,m2);
         }
-        for(int i=0 ; i<ylen ; i++) {
-            dfs(matrix,0,i,m);
-            dfs(matrix,xlen-1,i,n);
+        for(int i=0 ; i<xlen ; i++){
+            dfs(matrix,i,0,m1);
+            dfs(matrix,i,ylen-1,m2);
         }
-
-        for(int i=0 ; i<xlen ; i++) {
-            for(int j=0 ; j<ylen ; j++) {
-                if(m[i][j]==1 && n[i][j]==1) {
-                    int[] sub = new int[2];
-                    sub[0]=i;
-                    sub[1]=j;
-                    result.add(sub);
+        for(int i=0 ; i<xlen ; i++){
+            for(int j=0 ; j<ylen ; j++){
+                if(m1[i][j]&&m2[i][j]){
+                    res.add(new int[]{i,j});
                 }
             }
         }
-
-        return result;
-
+        return res;
     }
 
-    public void dfs(int[][] matrix,int x,int y,int[][] m) {
-        if(x<0||x>=xlen||y<0||y>=ylen||m[x][y]!=0) return;
-        if(m[x][y]==0) {
-            m[x][y] = 1;
+    public void dfs(int[][] matrix,int x,int y,boolean[][] m){
+        if(x<0||x>=row||y<0||y>=col||m[x][y]) return;
+        m[x][y] = true;
+
+        for(int[] dir : dirs){
+            int i = x+dir[0];
+            int j = y+dir[1];
+
+            if(i>=0&&i<row&&j>=0&&j<col&&matrix[i][j]>=matrix[x][y]){
+                dfs(matrix,i,j,m);
+            }
         }
-        if((x-1>=0)&&(matrix[x-1][y]>=matrix[x][y])){
-            dfs(matrix,x-1,y,m);
-        }
-        if((x+1<xlen)&&(matrix[x+1][y]>=matrix[x][y])){
-            dfs(matrix,x+1,y,m);
-        }
-        if((y-1>=0)&&(matrix[x][y-1]>=matrix[x][y])){
-            dfs(matrix,x,y-1,m);
-        }
-        if((y+1<ylen)&&(matrix[x][y+1]>=matrix[x][y])){
-            dfs(matrix,x,y+1,m);
-        }
+
     }
 }
