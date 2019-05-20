@@ -1,17 +1,31 @@
 package leetcode;
 //排列硬币
 public class Q441 {
-    //30%  递减
+    //二分法
     public int arrangeCoins(int n) {
-        for(int i=1 ; ; i++){
-            if(n<i){
-                return i-1;
+        if(n==0) return 0;
+        long start = 1;
+        long end = n;
+
+        while(start<end){
+            long mid = start + (end-start)/2;
+            if(start == end-1){
+                long sum = (1+end)*end/2;
+                if( sum<= n){
+                    return (int)end;
+                } else{
+                    return (int)start;
+                }
             }
-            if(n==i){
-                return i;
+
+            long num = (1+mid)*mid/2;
+            if(num>n){
+                end = mid-1;
+            } else{
+                start = mid;
             }
-            n -= i;
         }
+        return (int)start;
     }
     //71%  公式 x(x+1)/2 = n
     public int arrangeCoins2(int n) {
