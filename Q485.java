@@ -1,11 +1,6 @@
 package leetcode;
 //最大连续1的个数
 public class Q485 {
-    public static void main(String[] args) {
-        Q485 q = new Q485();
-        int[] a = {1,0,1,1,0,1};
-        System.out.println(q.findMaxConsecutiveOnes(a));
-    }
     //9ms 50%
     public int findMaxConsecutiveOnes(int[] nums) {
         int result = 0;
