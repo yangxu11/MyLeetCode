@@ -1,62 +1,53 @@
 package leetcode;
 
 import java.util.*;
+/*
+ * @Author YX
+ * @Description 二叉树中的众数
+ * @Date 10:05 2019/6/2
+ * @Param
+ * @return
+ **/
 
+//中序遍历中夹杂判断
 public class Q501 {
 
-    static class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-        TreeNode(int x) { val = x; }
+    int max = 1;
+    int cur = 1;
+    TreeNode pre;
+    public int[] findMode(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if(root==null) return new int[0];
+        dfs(root,res);
+        int[] ans = new int[res.size()];
+        for(int i=0 ; i<res.size(); i++){
+            ans[i] = res.get(i);
+        }
+
+        return ans;
     }
-
-    public static Map<Integer,Integer> map = new HashMap<>();
-
-    public static List<Integer> findMode(TreeNode root) {
-
-        scanTree(root);
-        int max = 0;
-        List<Integer> result = new ArrayList<>();
-        for(int i : map.keySet()) {
-            if(map.get(i) > max) {
-                result.clear();
-                result.add(i);
-                max = map.get(i);
-            } else if(map.get(i) == max) {
-                result.add(i);
+    private void dfs(TreeNode root,List<Integer> list){
+        if(root==null){
+            return;
+        }
+        dfs(root.left,list);
+        if(pre!=null){
+            if(pre.val==root.val){
+                ++cur;
+            } else{
+                cur=1;
             }
         }
-        int[] a = new int[result.size()];
-        for(int i=0 ; i<result.size() ; i++) {
-            a[i] = result.get(i);
+        if(cur == max){
+            list.add(root.val);
         }
-
-        return result;
-    }
-
-    public static void scanTree(TreeNode root) {
-
-        if(root == null) return;
-
-        if(map.containsKey(root.val)) {
-            map.put(root.val,map.get(root.val)+1);
-        } else {
-            map.put(root.val,1);
+        if(cur > max){
+            list.clear();
+            list.add(root.val);
+            max = cur;
         }
-
-        scanTree(root.left);
-        scanTree(root.right);
-
-    }
-
-
-    public static void main(String[] args) {
-        TreeNode root = new TreeNode(0);
-        root.left = new TreeNode(1);
-        root.right = new TreeNode(2);
-
-        System.out.println(findMode(root));
+        pre = root;
+        dfs(root.right,list);
     }
 
 }
