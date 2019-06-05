@@ -5,6 +5,7 @@ public class Q516 {
     //内存消耗: 37.7 MB, 在Longest Palindromic Subsequence的Java提交中击败了62.50% 的用户
 
     //建立数组DP[][] 存储i - j之间最长回文子序列的长度
+    //注意一层遍历要从末尾开始，这样才可以范围由小到大
     //dp[i][j]的长度，如果char[i] == char[j] dp[i][j] = dp[i+1][j-1]+2
     public int longestPalindromeSubseq(String s) {
         char[] chars = s.toCharArray();
