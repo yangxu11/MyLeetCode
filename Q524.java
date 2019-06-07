@@ -6,45 +6,35 @@ import java.util.List;
 
 public class Q524 {
 
+    //先对数组排序，先长度，后字典（ a.compareTo(b) ）
+    //遍历判断子序列
     public String findLongestWord(String s, List<String> d) {
-        if (d.isEmpty() || s.length() == 0) return "";
-        Collections.sort(d, new StringComparator());
-        for (String d1 : d) {
-            int flag = 0;
-            int index = -1;
-            for (int i = 0; i < d1.length(); i++) {
-                for (int j = index + 1; j < s.length(); j++) {
-                    if ((j == s.length() - 1 && i != d1.length() - 1) ||
-                            (j == s.length() - 1 && i == d1.length() - 1 && d1.charAt(i) != s.charAt(j))) {
-                        flag = 1;
-                    }
-                    if (d1.charAt(i) == s.charAt(j)) {
-                        index = j;
-                        break;
-                    }
-                }
-
+        Comparator<String> comp = new Comparator<String>(){
+            public int compare(String a,String b){
+                return a.length()<b.length() ? 1 : (a.length()==b.length() ? a.compareTo(b): -1);
             }
-            if (flag == 0) return d1;
+        };
+        Collections.sort(d,comp);
+        for(String str : d){
+            if(isSub(s,str)){
+                return str;
+            }
         }
+
         return "";
     }
-}
 
-class StringComparator implements Comparator<String> {
-    @Override
-    public int compare(String o1, String o2) {
-        if (o1.length() < o2.length()) {
-            return 1;
-        } else if (o1.length() > o2.length()) {
-            return -1;
-        } else {
-            for (int i = 0; i < o1.length(); i++) {
-                if (o1.charAt(i) > o2.charAt(i)) return 1;
-                if (o1.charAt(i) < o2.charAt(i)) return -1;
+    private boolean isSub(String str,String s){
+        int index = 0;
+        for(int i=0 ; i<s.length() ; i++){
+            char c = s.charAt(i);
+            index = str.indexOf(c,index);
+            if(index==-1){
+                return false;
             }
-            return 0;
+            ++index;
         }
+        return true;
     }
 
 }
