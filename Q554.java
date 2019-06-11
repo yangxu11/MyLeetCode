@@ -1,34 +1,26 @@
 package leetcode;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 //砖墙
 public class Q554 {
     public int leastBricks(List<List<Integer>> wall) {
-        int length = 0;
-        HashMap<Integer,Integer> map = new HashMap<>();
-        for(int i=0 ; i<wall.size() ; i++) {
-            List<Integer> list = wall.get(i);
-            List<Integer> lens = new ArrayList<>();
-            int len = 0;
-            for(int j=0 ; j<list.size() ;j++) {
-                len = len +list.get(j);
-                lens.add(len);
-            }
-            length = len;
-            for(int num : lens) {
-                if(map.containsKey(num)) {
-                    map.put(num,map.get(num)+1);
-                } else {
-                    map.put(num,1);
-                }
+        Map<Integer,Integer> map = new HashMap<>();
+
+        for(List<Integer> list : wall){
+            int sum = 0;
+            for(int i=0 ; i<list.size()-1 ; i++){
+                sum+=list.get(i);
+                map.put(sum,map.getOrDefault(sum,0)+1);
             }
         }
-        map.remove(length);
-        if(map.isEmpty()) return wall.size();
-        return wall.size()- Collections.max(map.values());
+        int res = 0;
+        for(int num : map.keySet()){
+            res = Math.max(res,map.get(num));
+        }
 
+        return wall.size()-res;
     }
 }
