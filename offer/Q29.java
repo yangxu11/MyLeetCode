@@ -11,19 +11,60 @@ import java.util.PriorityQueue;
  * @create 2019-05-05  16:55
  **/
 public class Q29 {
+    //快排思想，左边的数都小于右边的数
     public ArrayList<Integer> GetLeastNumbers_Solution(int [] input, int k) {
+
         ArrayList<Integer> res = new ArrayList<>();
-        if(input.length<k) return res;
-        PriorityQueue<Integer> queue = new PriorityQueue<>();
-        for(int i=0 ; i<input.length ; i++){
-            queue.add(input[i]);
+        if(k<=0){
+            return res;
+        }
+        if(input.length==0||input.length<k){
+            return res;
         }
 
+        int start = 0;
+        int end = input.length-1;
+
+        int index = partition(input,start,end);
+
+        while(index!=k-1){
+            if(index>k-1){
+                end = index-1;
+                index = partition(input,start,end);
+            } else {
+                start = index+1;
+                index = partition(input,start,end);
+            }
+        }
         for(int i=0 ; i<k ; i++){
-            res.add(queue.poll());
+            res.add(input[i]);
         }
         return res;
     }
+
+    public int partition(int[] input,int start,int end){
+        int target = input[start];
+
+        while(start<end){
+            while(start<end && input[end]>=target){
+                end--;
+            }
+            input[start] = input[end];
+            while(start<end && input[start]<=target){
+                ++start;
+            }
+            input[end] = input[start];
+        }
+        input[start] = target;
+        return start;
+    }
+
+    /*
+     * @Author YX
+     * 最大堆
+     *
+     **/
+
     public ArrayList<Integer> GetLeastNumbers_Solution1(int [] input, int k) {
         ArrayList<Integer> res = new ArrayList<>();
         PriorityQueue<Integer> pq = new PriorityQueue(new Comparator<Integer>() {
