@@ -1,42 +1,25 @@
 package leetcode;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Q654 {
 
     public TreeNode constructMaximumBinaryTree(int[] nums) {
-
-        List<Integer> list =new ArrayList<Integer>();
-        for(int i=0 ; i<nums.length ; i++) {
-            list.add(nums[i]);
-        }
-        return createTree(list);
-
+        if(nums.length==0) return null;
+        return getTree(nums,0,nums.length-1);
     }
-    public TreeNode createTree(List list) {
-        if(list.size()==0) return null;
-        int maxIndex = findMaxIndex(list);
-        int max = (int)list.get(maxIndex);
-        TreeNode root = new TreeNode(max);
-        if(maxIndex>0) {
-            root.left = createTree(list.subList(0,maxIndex));
-        }
-        if(maxIndex<list.size()-1) {
-            root.right = createTree(list.subList(maxIndex+1,list.size()));
-        }
-        return root;
-    }
-    public int findMaxIndex(List list) {
-        int index=0;
-        int max = (int)list.get(0);
-        for(int i=0 ; i<list.size() ; i++) {
-            if(max < (int)list.get(i)) {
-                max=(int)list.get(i);
+
+    public TreeNode getTree(int[] nums,int start,int end){
+        if(start>end) return null;
+        if(start==end) return new TreeNode(nums[start]);
+        int index = start;
+        for(int i=start ; i<=end ; i++){
+            if(nums[i]>nums[index]){
                 index = i;
             }
         }
-        return index;
+        TreeNode root = new TreeNode(nums[index]);
+        root.left = getTree(nums,start,index-1);
+        root.right = getTree(nums,index+1,end);
+        return root;
     }
 
 
