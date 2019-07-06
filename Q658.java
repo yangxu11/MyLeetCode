@@ -24,65 +24,42 @@ public class Q658 {
             list.add(arr[i]);
         return list;
     }
+
     //30%  先找到最接近x的元素，然后双指针判断前后距离，最后排序
-    public List<Integer> findClosestElements1(int[] arr, int k, int x) {
-        List<Integer> result = new ArrayList<>();
+    public List<Integer> findClosestElements(int[] arr, int k, int x) {
+        List<Integer> res = new ArrayList<>();
+        int index = -1;
 
         int start = 0;
         int end = arr.length-1;
-        int index=0;
 
-        while(start<=end){
-            int mid = start+(end-start)/2;
-            if(start==start){
-                index = start;
-                break;
-            }
-
+        while(start<end){
+            int mid = start + (end-start)/2;
             if(arr[mid]>x){
-                end = mid;
-            } else if(arr[mid]<x){
+                end  = mid-1;
+            } else if(arr[mid] < x){
                 start = mid+1;
-            } else {
+            } else{
                 index = mid;
                 break;
             }
         }
-        int left = index-1;
-        int right = index;
-
-        if(arr[index]>x && index>0){
-            if(arr[index]-x > x-arr[index-1]){
-                left = index-1;
-                right = index;
-            }
-        }
-        if(arr[index]<x && index<arr.length-1){
-            if(x-arr[index] > arr[index+1] -x){
-                left = index;
-                right = index+1;
-            }
-        }
-        int num=0;
-        while(num<k){
-            int ldiff=Integer.MAX_VALUE;
-            int rdiff=Integer.MAX_VALUE;
-            if(left>=0){
-                ldiff = Math.abs(x-arr[left]);
-            }
-            if(right<=arr.length-1){
-                rdiff = Math.abs(x-arr[right]);
-            }
-            if(ldiff<=rdiff){
-                result.add(arr[left]);
-                left--;
+        index = index == -1 ? start : index;
+        int l = index-1;
+        int r = index;
+        while(l>=0 || r<arr.length){
+            int lenL = l>=0 ? Math.abs(x-arr[l]) : Integer.MAX_VALUE;
+            int lenR = r<arr.length ? Math.abs(x-arr[r]) : Integer.MAX_VALUE;
+            if(lenL<=lenR){
+                res.add(arr[l--]);
             } else{
-                result.add(arr[right]);
-                right++;
+                res.add(arr[r++]);
             }
-            num++;
+            if(--k == 0){
+                break;
+            }
         }
-        Collections.sort(result);
-        return result;
+        Collections.sort(res);
+        return res;
     }
 }
