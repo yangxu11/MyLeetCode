@@ -1,8 +1,8 @@
 package leetcode;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
 
 /**
  * 快照数组
@@ -12,37 +12,31 @@ import java.util.Map;
  **/
 public class Q5146 {
     class SnapshotArray {
-        int[] cur;
-
-        Map<Integer,int[]> map = new HashMap<>();
-
-        boolean flag = false;
-
-        int snap_id=0;
+        List<TreeMap<Integer, Integer>> list = new ArrayList<>();
+        int version = 0;
 
         public SnapshotArray(int length) {
-            cur = new int[length];
+            version = 0;
+            for (int i = 0; i < length; i++) {
+                TreeMap<Integer, Integer> t = new TreeMap<>();
+                t.put(version, 0);
+                list.add(t);
+            }
         }
 
         public void set(int index, int val) {
-            cur[index] = val;
-            flag = true;
+            list.get(index).put(version, val);
         }
 
         public int snap() {
-            snap_id ++;
-            if(flag){
-                map.put(snap_id, Arrays.copyOf(cur,cur.length));
-            } else{
-                map.put(snap_id,cur);
-            }
-            flag = false;
-            return snap_id-1;
+            int res = version;
+            version ++;
+            return res;
         }
 
         public int get(int index, int snap_id) {
-            int[] nums = map.get(snap_id);
-            return nums[index];
+            TreeMap<Integer, Integer> t = list.get(index);
+            return t.floorEntry(snap_id).getValue();
         }
     }
 }
